@@ -1,6 +1,6 @@
 {
   "name": "endworks",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "license": "AGPL-3.0",
   "private": true,
   "dependencies": {
@@ -11,17 +11,29 @@
     "@types/node": "^16.7.13",
     "@types/react": "^17.0.20",
     "@types/react-dom": "^17.0.9",
+    "express": "^4.13.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
+    "styled-components": "^5.3.3",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.0",
+    "@babel/preset-react": "^7.16.7",
+    "@babel/register": "^7.17.0",
+    "prettier": "^2.5.1",
+    "tslint": "^6.1.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "copyfiles": "copyfiles -u 1 \"src/**/*.css\" css",
+    "server": "tsc --project tsconfig.json && node build/server"
   },
   "eslintConfig": {
     "extends": [

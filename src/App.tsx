@@ -1,20 +1,15 @@
-import React from 'react';
-import './App.css';
+import App from './views/App'
+import express from 'express'
+import React from 'react'
+import ReactDOMServer from 'react-dom/server'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <h1 className='header'>end.<span className='header-light'>works</span></h1>
-        <p className='subtitle'>by <a href="//github.com/ender-null">@ender-null</a></p>
-        <ul className='menu'>
-          <li><a href="//zine.end.works">Zine</a></li>
-          <li><a href="//canopus.end.works">Canopus</a></li>
-          <li><a href="//jett.end.works">Accurate Jett Gameplay [ALPHA]</a></li>
-        </ul>
-      </header>
-    </div>
-  );
-}
+const app = express();
 
-export default App;
+app.get('/', (_request: any, response: any) => {
+  const props = { server: true };
+  const element = React.createElement(App, props)
+  const html = ReactDOMServer.renderToStaticMarkup(element);
+  response.send(html);
+});
+
+export default app
