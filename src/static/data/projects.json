@@ -1,5 +1,6 @@
 [
   {
+    "slug": "zine",
     "title": "Zine",
     "description": "See available movies in cinemas in a less annoying way",
     "screenshot": "https://dummyimage.com/320x240/aaa/fff",
@@ -7,6 +8,7 @@
     "source": "//github.com/ender-null/zine"
   },
   {
+    "slug": "polaris",
     "title": "Polaris",
     "description": "A multi platform Typescript bot using plugins!",
     "screenshot": "https://dummyimage.com/320x240/aaa/fff",
@@ -14,6 +16,7 @@
     "source": "//github.com/ender-null/polaris"
   },
   {
+    "slug": "canopus",
     "title": "Canopus",
     "description": "I write microservices no one wants",
     "screenshot": "https://dummyimage.com/320x240/aaa/fff",
@@ -21,6 +24,7 @@
     "source": "//github.com/endworks/canopus"
   },
   {
+    "slug": "accurate-jett-gameplay",
     "title": "Accurate Jett Gameplay",
     "description": "100% not fake real jett gameplay",
     "screenshot": "https://dummyimage.com/320x240/aaa/fff",
