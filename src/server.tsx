@@ -3,7 +3,7 @@ import fs from 'fs'
 import express from 'express'
 import ReactDOMServer from 'react-dom/server'
 
-import App from './app'
+import App from './main'
 
 const PORT = process.env.PORT || 8080
 const app = express()
