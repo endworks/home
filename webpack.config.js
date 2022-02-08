@@ -61,8 +61,17 @@ module.exports = {
   },
   optimization: {
     splitChunks: {
-      chunks: 'all',
-    },
+      cacheGroups: {
+        default: false,
+        vendors: false,
+
+        vendor: {
+          chunks: 'all',
+          name: 'vendor',
+          test: /node_modules/,
+        }
+      }
+    }
   },
   plugins: [
     new HtmlWebPackPlugin({
