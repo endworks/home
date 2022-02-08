@@ -4,30 +4,47 @@ body {
     'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: black;
+  color: white;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-.App {
-  text-align: center;
-}
-
-.App-header {
-  background-color: black;
-  min-height: 100vh;
+.app {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 1024px;
+}
+
+.app-header {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
   font-size: calc(10px + 2vmin);
-  color: white;
+  width: 100%;
+  margin-top: 32px;
+  border-bottom: solid 2px white;
 }
 
 .header {
+  display: flex;
+  align-items: flex-end;
+}
+
+.header a {
+  color: white;
+  text-decoration: none;
+}
+
+.header-title {
   font-weight: 400;
-  margin-bottom: 0;
+  margin: 0;
 }
 
 .header-light {
@@ -35,16 +52,17 @@ code {
 }
 
 .subtitle {
-  margin: 0;
+  margin: 0 0 10px 16px;
   padding: 0;
   font-size: 14px;
-  color: white;
 }
 
 .subtitle a {
-  color: white;
+  color: black;
+  background: white;
   text-decoration: none;
   font-weight: 600;
+  padding: 0 4px;
 }
 
 .menu {
@@ -52,6 +70,8 @@ code {
   list-style: none;
   margin: 8px 0 0 0;
   padding: 0;
+  flex-grow: 1;
+  justify-content: flex-end;
 }
 
 .menu li {
@@ -72,4 +92,69 @@ code {
 
 .menu li:hover a {
   color: black;
+}
+
+.button {
+  background: black;
+  color: white;
+  border: solid 2px white;
+  padding: 4px 16px;
+  text-decoration: none;
+  font-weight: 500;
+  text-transform: lowercase;
+}
+
+.button:hover {
+  background: white;
+  color: black;
+}
+
+.section {
+  width: 100%;
+}
+
+.section-title {
+  background-color: white;
+  color: black;
+  padding: 4px 16px;
+  width: fit-content;
+  text-transform: lowercase;
+}
+
+.project {
+  display: flex;
+  flex-direction: row;
+  padding: 32px 0 64px;
+}
+
+.project:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.project-info {
+  flex-grow: 1;
+}
+
+.project-title {
+  margin: 0;
+  padding: 0 0 4px 0;
+  border-bottom: solid 2px white;
+}
+
+.project-screenshot {
+  margin: 0;
+  border: solid 2px white;
+}
+
+.project-links .button {
+  margin-right: 16px;
+}
+
+.project .project-info {
+  margin-right: 16px;
+}
+
+.project:nth-child(even) .project-info {
+  margin-right: 0;
+  margin-left: 16px;
 }

@@ -22,6 +22,7 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY --from=builder /usr/src/app/build /usr/src/app/build/
+COPY --from=builder /usr/src/app/node_modules /usr/src/app/node_modules/
 COPY package.json ./
 
 EXPOSE 8080
