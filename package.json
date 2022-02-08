@@ -10,7 +10,7 @@
     "eject": "react-scripts eject",
     "dev": "webpack-dev-server --mode=development",
     "prod:build": "webpack --mode=production",
-    "prod:start": "node build/bundle.js",
+    "prod:start": "node build/main.bundle.js",
     "prod": "yarn prod:build && yarn prod:start"
   },
   "dependencies": {
