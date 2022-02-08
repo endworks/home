@@ -2,8 +2,7 @@ import path from 'path'
 import fs from 'fs'
 import express from 'express'
 import ReactDOMServer from 'react-dom/server'
-
-import App from './main'
+import App from './app'
 
 const PORT = process.env.PORT || 8080
 const app = express()

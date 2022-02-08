@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom'
-import App from './main'
+import App from './app'
 import reportWebVitals from './reportWebVitals'
 
 ReactDOM.hydrate(<App />, document.getElementById('root'))
