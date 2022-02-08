@@ -1,6 +1,6 @@
 {
   "name": "endworks",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "license": "AGPL-3.0",
   "private": true,
   "scripts": {
@@ -9,8 +9,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "dev": "webpack-dev-server --mode=development",
-    "prod": "webpack --mode=production",
-    "prod:start": "webpack --mode=production && node build/bundle.js"
+    "prod:build": "webpack --mode=production",
+    "prod:start": "node build/bundle.js",
+    "prod": "yarn prod:build && yarn prod:start"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",

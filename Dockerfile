@@ -11,7 +11,7 @@ COPY yarn.lock ./
 COPY . .
 
 RUN yarn --frozen-lockfile
-RUN yarn prod
+RUN yarn prod:build
 
 FROM node:alpine AS release
 
@@ -21,10 +21,9 @@ RUN mkdir -p /usr/src/app
 
 WORKDIR /usr/src/app
 
-COPY --from=builder /usr/src/app/node_modules /usr/src/app/node_modules/
 COPY --from=builder /usr/src/app/build /usr/src/app/build/
 COPY package.json ./
 
 EXPOSE 8080
 
-CMD ["node", "./build/bundle.js"]
+CMD ["yarn", "prod:start"]
