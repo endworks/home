@@ -11,10 +11,20 @@ COPY yarn.lock ./
 COPY . .
 
 RUN yarn --frozen-lockfile
-RUN yarn build
+RUN yarn prod
 
-FROM nginx:latest AS release
+FROM node:alpine AS release
 
 LABEL org.opencontainers.image.source https://github.com/endworks/home
 
-COPY --from=builder /usr/src/app/build /usr/share/nginx/html
+RUN mkdir -p /usr/src/app
+
+WORKDIR /usr/src/app
+
+COPY --from=builder /usr/src/app/node_modules /usr/src/app/node_modules
+COPY --from=builder /usr/src/app/build /usr/src/app/build/
+COPY package.json ./
+
+EXPOSE 8080
+
+CMD ["node", "./build/bundle.js"]
