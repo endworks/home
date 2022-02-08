@@ -1,24 +1,29 @@
-import '../static/sass/app.css'
+import { Link, Route, Routes } from 'react-router-dom'
+import routing from '../routing'
+import '../static/sass/app.sass'
 import Menu from './menu'
-import Projects from './projects'
 
 const App = () => {
   return (
     <div className="app">
       <header className="app-header">
         <div className="header">
-          <a href="/">
+          <Link to="/">
             <h1 className="header-title">
               end.<span className="header-light">works</span>
             </h1>
-          </a>
+          </Link>
           <p className="subtitle">
-            by <a href="//github.com/ender-null">@ender-null</a>
+            by <Link to="//github.com/ender-null">@ender-null</Link>
           </p>
         </div>
         <Menu></Menu>
       </header>
-      <Projects></Projects>
+      <Routes>
+        {routing.map((item) => (
+          <Route key={item.path} path={item.path} element={item.element} />
+        ))}
+      </Routes>
     </div>
   )
 }

@@ -1,0 +1,34 @@
+.project
+  display: flex
+  flex-direction: row
+  margin-bottom: 64px
+
+.project:nth-child(even)
+  flex-direction: row-reverse
+
+.project-info
+  flex-grow: 1
+
+.project-title
+  margin: 0
+  padding: 0
+  border-bottom: solid 2px white
+
+.project-screenshot
+  margin: 0
+  border: solid 2px white
+
+.project-links .button
+  margin-right: 16px
+
+.project .project-info
+  margin-right: 16px
+
+.project:nth-child(even)
+  .project-info
+    margin-right: 0
+    margin-left: 16px
+
+@media (max-width: 720px)
+  .project
+    flex-direction: column !important
