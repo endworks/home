@@ -14,7 +14,10 @@ const App = () => {
             </h1>
           </Link>
           <p className="subtitle">
-            by <Link to="//github.com/ender-null">@ender-null</Link>
+            by{' '}
+            <Link to="//github.com/ender-null" className="contrast">
+              @ender-null
+            </Link>
           </p>
         </div>
         <Menu></Menu>

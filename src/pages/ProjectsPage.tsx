@@ -4,7 +4,7 @@ import '../static/sass/projects.sass'
 const ProjectsPage = () => {
   return (
     <div className="section">
-      <h2 className="section section-title">Projects</h2>
+      <h2 className="section section-title contrast">Projects</h2>
       <div className="section-content projects">
         {projectsData.map((project) => {
           return (
