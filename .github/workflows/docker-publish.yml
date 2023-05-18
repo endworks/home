@@ -117,8 +117,8 @@ jobs:
           PORT: op://end.works/GitHub Actions/SSH/port
           USER: op://end.works/GitHub Actions/SSH/user
           PASSPHRASE: op://end.works/GitHub Actions/SSH/passphrase
-          KEY: op://end.works/GitHub/private key
-          FINGERPRINT: op://end.works/GitHub/fingerprint
+          KEY: op://end.works/GitHub Actions/key
+          FINGERPRINT: op://end.works/GitHub Actions/fingerprint
 
       - name: Deploy image to server
         uses: appleboy/ssh-action@v0.1.10
