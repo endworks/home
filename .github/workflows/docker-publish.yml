@@ -29,7 +29,7 @@ jobs:
 
       - name: Load secret
         id: op-load-secret
-        uses: 1password/load-secrets-action@v1
+        uses: 1password/load-secrets-action@v1.2.0
         with:
           export-env: false
         env:
@@ -63,7 +63,7 @@ jobs:
 
       - name: Load secret
         id: op-load-secret
-        uses: 1password/load-secrets-action@v1
+        uses: 1password/load-secrets-action@v1.2.0
         with:
           export-env: false
         env:
@@ -108,9 +108,9 @@ jobs:
     steps:
       - name: Load ssh secrets
         id: op-load-ssh-secrets
-        uses: 1password/load-secrets-action@v1
+        uses: 1password/load-secrets-action@v1.2.0
         with:
-          export-env: true
+          export-env: false
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           HOST: op://end.works/GitHubActions/SSH/host
