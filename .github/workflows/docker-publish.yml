@@ -116,7 +116,7 @@ jobs:
           HOST: op://end.works/GitHub Actions/SSH/host
           PORT: op://end.works/GitHub Actions/SSH/port
           USER: op://end.works/GitHub Actions/SSH/user
-          SSH_KEY: op://end.works/GitHub Actions/SSH/ssh-key
+          SSH_KEY: op://end.works/GitHub Actions/SSH/key
           PASSPHRASE: op://end.works/GitHub Actions/SSH/passphrase
 
       - name: Deploy image to server
