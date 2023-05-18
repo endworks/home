@@ -116,7 +116,7 @@ jobs:
           HOST: op://end.works/GitHubActions/SSH/host
           PORT: op://end.works/GitHubActions/SSH/port
           USER: op://end.works/GitHubActions/SSH/user
-          KEY: op://end.works/GitHubActions/SSH/ssh-key
+          SSH_KEY: op://end.works/GitHubActions/SSH/ssh-key
           PASSPHRASE: op://end.works/GitHubActions/SSH/passphrase
 
       - name: Deploy image to server
@@ -124,7 +124,7 @@ jobs:
         with:
           host: ${{ env.HOST }}
           username: ${{ env.USERNAME }}
-          key: ${{ env.KEY }}
+          key: ${{ env.SSH_KEY }}
           passphrase: ${{ env.PASSPHRASE }}
           port: ${{ env.PORT }}
           script: |
