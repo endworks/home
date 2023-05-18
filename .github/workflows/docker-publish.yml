@@ -125,7 +125,7 @@ jobs:
           host: ${{ env.HOST }}
           username: ${{ env.USERNAME }}
           key: ${{ env.SSH_KEY }}
-          passphrase: ${{ env.PASSPHRASE }}
+          # passphrase: ${{ env.PASSPHRASE }}
           port: ${{ env.PORT }}
           script: |
             docker pull ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:next
