@@ -12,6 +12,7 @@ jobs:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          CR_PAT: op://end.works/GitHubActions/password
           HOST: op://end.works/GitHubActions/SSH/host
           PORT: op://end.works/GitHubActions/SSH/port
           USER: op://end.works/GitHubActions/SSH/user
@@ -20,6 +21,7 @@ jobs:
 
       - name: Print masked secret
         run: |
+          echo "HOST: ${{ env.CR_PAT }}"
           echo "HOST: ${{ env.HOST }}"
           echo "PORT: ${{ env.PORT }}"
           echo "USER: ${{ env.USER }}"
