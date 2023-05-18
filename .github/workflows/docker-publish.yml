@@ -34,7 +34,7 @@ jobs:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          CR_PAT: op://end.works/GitHubActions/password
+          CR_PAT: op://end.works/GitHub Actions/password
 
       - name: Log into GitHub Container Registry
         # TODO: Create a PAT with `read:packages` and `write:packages` scopes and save it as an Actions secret `CR_PAT`
@@ -68,7 +68,7 @@ jobs:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          CR_PAT: op://end.works/GitHubActions/password
+          CR_PAT: op://end.works/GitHub Actions/password
 
       - name: Log into GitHub Container Registry
         # TODO: Create a PAT with `read:packages` and `write:packages` scopes and save it as an Actions secret `CR_PAT`
@@ -113,11 +113,11 @@ jobs:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          HOST: op://end.works/GitHubActions/SSH/host
-          PORT: op://end.works/GitHubActions/SSH/port
-          USER: op://end.works/GitHubActions/SSH/user
-          SSH_KEY: op://end.works/GitHubActions/SSH/ssh-key
-          PASSPHRASE: op://end.works/GitHubActions/SSH/passphrase
+          HOST: op://end.works/GitHub Actions/SSH/host
+          PORT: op://end.works/GitHub Actions/SSH/port
+          USER: op://end.works/GitHub Actions/SSH/user
+          SSH_KEY: op://end.works/GitHub Actions/SSH/ssh-key
+          PASSPHRASE: op://end.works/GitHub Actions/SSH/passphrase
 
       - name: Deploy image to server
         uses: appleboy/ssh-action@v0.1.10
