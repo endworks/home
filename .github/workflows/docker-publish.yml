@@ -31,14 +31,14 @@ jobs:
         id: op-load-secret
         uses: 1password/load-secrets-action@v1.2.0
         with:
-          export-env: false
+          export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           CR_PAT: op://end.works/GitHubActions/password
 
       - name: Log into GitHub Container Registry
         # TODO: Create a PAT with `read:packages` and `write:packages` scopes and save it as an Actions secret `CR_PAT`
-        run: echo "${{ steps.op-load-secret.outputs.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo "${{ env.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Run tests
         run: |
@@ -65,14 +65,14 @@ jobs:
         id: op-load-secret
         uses: 1password/load-secrets-action@v1.2.0
         with:
-          export-env: false
+          export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           CR_PAT: op://end.works/GitHubActions/password
 
       - name: Log into GitHub Container Registry
         # TODO: Create a PAT with `read:packages` and `write:packages` scopes and save it as an Actions secret `CR_PAT`
-        run: echo "${{ steps.op-load-secret.outputs.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo "${{ env.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
@@ -110,24 +110,23 @@ jobs:
         id: op-load-ssh-secrets
         uses: 1password/load-secrets-action@v1.2.0
         with:
-          export-env: false
+          export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           HOST: op://end.works/GitHubActions/SSH/host
           PORT: op://end.works/GitHubActions/SSH/port
           USER: op://end.works/GitHubActions/SSH/user
-          KEY: op://end.works/GitHubActions/SSH/key
-          SSH_KEY: op://end.works/GitHubActions/SSH/ssh-key
+          KEY: op://end.works/GitHubActions/SSH/ssh-key
           PASSPHRASE: op://end.works/GitHubActions/SSH/passphrase
 
       - name: Deploy image to server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ steps.op-load-ssh-secrets.outputs.HOST }}
-          username: ${{ steps.op-load-ssh-secrets.outputs.USERNAME }}
-          key: ${{ steps.op-load-ssh-secrets.outputs.KEY }}
-          passphrase: ${{ steps.op-load-ssh-secrets.outputs.PASSPHRASE }}
-          port: ${{ steps.op-load-ssh-secrets.outputs.PORT }}
+          host: ${{ env.HOST }}
+          username: ${{ env.USERNAME }}
+          key: ${{ env.KEY }}
+          passphrase: ${{ env.PASSPHRASE }}
+          port: ${{ env.PORT }}
           script: |
             docker pull ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:next
             docker stop ${{ env.IMAGE_NAME }}
