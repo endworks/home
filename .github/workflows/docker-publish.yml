@@ -25,11 +25,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+
+      - name: Load secret
+        id: op-load-secret
+        uses: 1password/load-secrets-action@v1
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          CR_PAT: op://end.works/GitHubActions/password
 
       - name: Log into GitHub Container Registry
         # TODO: Create a PAT with `read:packages` and `write:packages` scopes and save it as an Actions secret `CR_PAT`
-        run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo "${{ env.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Run tests
         run: |
@@ -50,11 +59,20 @@ jobs:
     if: github.event_name == 'push'
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+
+      - name: Load secret
+        id: op-load-secret
+        uses: 1password/load-secrets-action@v1
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          CR_PAT: op://end.works/GitHubActions/password
 
       - name: Log into GitHub Container Registry
         # TODO: Create a PAT with `read:packages` and `write:packages` scopes and save it as an Actions secret `CR_PAT`
-        run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo "${{ env.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
@@ -88,14 +106,27 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
+      - name: Load secret
+        id: op-load-secret
+        uses: 1password/load-secrets-action@v1
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          HOST: op://end.works/GitHubActions/SSH/host
+          PORT: op://end.works/GitHubActions/SSH/port
+          USER: op://end.works/GitHubActions/SSH/user
+          KEY: op://end.works/GitHubActions/SSH/key
+          PASSPHRASE: op://end.works/GitHubActions/SSH/passphrase
+
       - name: Deploy image to server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
-          port: ${{ secrets.PORT }}
+          host: ${{ env.HOST }}
+          username: ${{ env.USERNAME }}
+          key: ${{ env.KEY }}
+          passphrase: ${{ env.PASSPHRASE }}
+          port: ${{ env.PORT }}
           script: |
             docker pull ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:next
             docker stop ${{ env.IMAGE_NAME }}
