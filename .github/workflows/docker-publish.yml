@@ -116,16 +116,18 @@ jobs:
           HOST: op://end.works/GitHub Actions/SSH/host
           PORT: op://end.works/GitHub Actions/SSH/port
           USER: op://end.works/GitHub Actions/SSH/user
-          KEY: op://end.works/GitHub Actions/SSH/key.pk
           PASSPHRASE: op://end.works/GitHub Actions/SSH/passphrase
+          KEY: op://end.works/GitHub/private key
+          FINGERPRINT: op://end.works/GitHub/fingerprint
 
       - name: Deploy image to server
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ env.HOST }}
           username: ${{ env.USERNAME }}
-          key: ${{ env.KEY }}
           port: ${{ env.PORT }}
+          key: ${{ env.KEY }}
+          fingerprint: ${{ env.FINGERPRINT }}
           passphrase: ${{ env.PASSPHRASE }}
           script: |
             docker pull ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:next
