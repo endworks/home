@@ -5,11 +5,12 @@ on:
     workflows: ["Docker"]
     branches:
       - main
+      - next
     types:
       - completed
 
 env:
-  IMAGE_NAME: inventario-react
+  IMAGE_NAME: home
 
 jobs:
   deploy:
