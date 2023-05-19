@@ -11,6 +11,8 @@ on:
   push:
     branches:
       - main
+      - "feature/**"
+      - "release/**"
     # Publish semver tags as releases.
     tags: ["v*.*.*"]
   pull_request:
@@ -164,4 +166,3 @@ jobs:
         run: |
           echo "### Deployment done! :rocket:" > $GITHUB_STEP_SUMMARY
           echo "Started container ``${{ env.CONTAINER_NAME }}`` running ``${{ github.repository }}@${{ env.TAG }}``" >> $GITHUB_STEP_SUMMARY
-
