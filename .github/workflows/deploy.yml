@@ -1,0 +1,44 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: ["Docker"]
+    branches:
+      - main
+      - next
+    types:
+      - completed
+
+env:
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load secret
+        id: op-load-secret
+        uses: 1password/load-secrets-action@v1.2.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          HOST: op://end.works/end.works/URL
+          PORT: op://end.works/end.works/port
+          USERNAME: op://end.works/end.works/username
+          KEY: op://end.works/SSH Key/private key
+          FINGERPRINT: op://end.works/SSH Key/fingerprint
+
+      - name: Deploy image to server
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ env.HOST }}
+          port: ${{ env.PORT }}
+          username: ${{ env.USERNAME }}
+          key: ${{ env.KEY }}
+          fingerprint: ${{ env.FINGERPRINT }}
+          script: |
+            docker pull ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:next
+            docker stop ${{ env.IMAGE_NAME }}
+            docker rm ${{ env.IMAGE_NAME }}
+            docker run -p 8084:3000/tcp -ti -d --restart unless-stopped --name ${{ env.IMAGE_NAME }} ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:next
