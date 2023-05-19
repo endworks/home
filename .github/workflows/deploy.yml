@@ -3,9 +3,6 @@ name: Deploy
 on:
   workflow_run:
     workflows: ["Docker"]
-    branches:
-      - main
-      - next
     types:
       - completed
 
@@ -15,6 +12,7 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Set container name
         id: set-name
@@ -23,6 +21,8 @@ jobs:
           image_name=${{github.repository}}
           image_name="${image_name#$owner}"
           image_name="${image_name#/}"
+          tag=${{github.sha}}
+          echo "TAG=${{github.sha}}" >> "$GITHUB_ENV"
           echo "IMAGE_NAME=$image_name" >> "$GITHUB_ENV"
 
       - name: Load secret
