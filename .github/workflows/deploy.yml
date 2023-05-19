@@ -16,9 +16,9 @@ jobs:
       - name: Set container name
         id: set-name
         run: |
-          echo "container_name=${basename `git rev-parse --show-toplevel`}" >> "$GITHUB_ENV"
           echo "repo=${github.repository}" >> "$GITHUB_ENV"
           echo "owner=${github.repository.owner}" >> "$GITHUB_ENV"
+          echo "container_name=${repo#$owner}"
       - name: Get container name
         id: get-name
         run: |
