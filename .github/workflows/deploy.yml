@@ -16,15 +16,15 @@ jobs:
       - name: Set container name
         id: set-name
         run: |
-          echo "repo=${github.repository}" >> "$GITHUB_ENV"
-          echo "owner=${github.repository.owner}" >> "$GITHUB_ENV"
-          echo "container_name=${repo#$owner}"
+          echo "repo=${{github.repository}}" >> "$GITHUB_ENV"
+          echo "owner=${{github.repository.owner}}" >> "$GITHUB_ENV"
+          echo "container_name=${${{env.repo}}#${{env.owner}}}"
       - name: Get container name
         id: get-name
         run: |
-          echo "container_name: container_name"
-          echo "repo: $repo"
-          echo "owner: $owner"
+          echo "container_name: ${{ env.container_name }}"
+          echo "repo: ${{ env.repo }}"
+          echo "owner: ${{ env.owner }}"
       - name: Load secret
         id: op-load-secret
         uses: 1password/load-secrets-action@v1.2.0
