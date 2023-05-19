@@ -19,21 +19,11 @@ jobs:
       - name: Set container name
         id: set-name
         run: |
-          repository=${{github.repository}}
           owner=${{github.repository_owner}}
-          image_name="${repository#$owner}"
+          image_name=${{github.repository}}
+          image_name="${image_name#$owner}"
           image_name="${image_name#/}"
           echo "IMAGE_NAME=$image_name" >> "$GITHUB_ENV"
-
-      - name: Get container name
-        id: get-name
-        run: |
-          echo "container_name: ${{ env.IMAGE_NAME }}"
-
-      - name: Generate job summary
-        id: generate-summary
-        run: |
-          echo "### Deploying `${{ github.repository }}` as `${{ env.IMAGE_NAME }}`! :rocket:" > $GITHUB_STEP_SUMMARY
 
       - name: Load secret
         id: op-load-secret
@@ -47,6 +37,11 @@ jobs:
           USERNAME: op://end.works/end.works/username
           KEY: op://end.works/SSH Key/private key
           FINGERPRINT: op://end.works/SSH Key/fingerprint
+
+      - name: Generate job summary
+        id: generate-summary
+        run: |
+          echo "### Deploying `${{ github.repository }}` as `${{ env.IMAGE_NAME }}`! :rocket:" > $GITHUB_STEP_SUMMARY
 
       - name: Deploy image to server
         uses: appleboy/ssh-action@v0.1.10
