@@ -17,11 +17,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-        CONTAINER_NAME: ${REPOSITORY#$OWNER}
+        CONTAINER_NAME: ${basename `git rev-parse --show-toplevel`}
     steps:
       - name: Get container name
         run: |
           echo "container name: $CONTAINER_NAME"
+          echo "repository: $REPOSITORY"
+          echo "owner: $OWNER"
       - name: Load secret
         id: op-load-secret
         uses: 1password/load-secrets-action@v1.2.0
