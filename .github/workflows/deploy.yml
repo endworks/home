@@ -1,9 +1,5 @@
 name: Deploy
 
-env:
-    REPOSITORY: ${{github.repository}}
-    OWNER: ${{github.actor}}
-
 on:
   workflow_run:
     workflows: ["Docker"]
@@ -16,14 +12,19 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-        CONTAINER_NAME: ${basename `git rev-parse --show-toplevel`}
     steps:
-      - name: Get container name
+      - name: Set container name
+        id: set-name
         run: |
-          echo "container name: $CONTAINER_NAME"
-          echo "repository: $REPOSITORY"
-          echo "owner: $OWNER"
+          echo "container_name=${basename `git rev-parse --show-toplevel`}" >> "$GITHUB_ENV"
+          echo "repo=${github.repository}" >> "$GITHUB_ENV"
+          echo "owner=${github.repository.owner}" >> "$GITHUB_ENV"
+      - name: Get container name
+        id: get-name
+        run: |
+          echo "container_name: container_name"
+          echo "repo: $repo"
+          echo "owner: $owner"
       - name: Load secret
         id: op-load-secret
         uses: 1password/load-secrets-action@v1.2.0
@@ -47,6 +48,6 @@ jobs:
           fingerprint: ${{ env.FINGERPRINT }}
           script: |
             docker pull ghcr.io/${{ github.repository }}:next
-            docker stop ${{ env.CONTAINER_NAME }}
-            docker rm ${{ env.CONTAINER_NAME }}
-            docker run -p 8084:3000/tcp -ti -d --restart unless-stopped --name ${{ env.CONTAINER_NAME }} ghcr.io/${{ github.repository }}:next
+            docker stop ${{ env.container_name }}
+            docker rm ${{ env.container_name }}
+            docker run -p 8084:3000/tcp -ti -d --restart unless-stopped --name ${{ env.container_name }} ghcr.io/${{ github.repository }}:next
