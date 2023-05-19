@@ -27,7 +27,7 @@ jobs:
           [ "$VERSION" != "main" ] && CONTAINER_NAME="${CONTAINER_NAME}-$VERSION"
           [ "$VERSION" == "main" ] && TAG=latest
 
-          echo "CONTAINER_NAME=$IMAGE_NAME" >> "$GITHUB_ENV"
+          echo "CONTAINER_NAME=$CONTAINER_NAME" >> "$GITHUB_ENV"
           echo "TAG=$TAG" >> "$GITHUB_ENV"
 
       - name: Load secret
