@@ -1,5 +1,9 @@
 name: Deploy
 
+env:
+    REPOSITORY: ${{github.repository}}
+    OWNER: ${{github.actor}}
+
 on:
   workflow_run:
     workflows: ["Docker"]
@@ -13,7 +17,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-        CONTAINER_NAME: ${github.repository#$github.actor }
+        CONTAINER_NAME: ${REPOSITORY#$OWNER}
     steps:
       - name: Get container name
         run: |
