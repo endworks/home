@@ -17,14 +17,16 @@ jobs:
         id: set-name
         run: |
           echo "repo=${{github.repository}}" >> "$GITHUB_ENV"
-          echo "owner=${{github.repository.owner}}" >> "$GITHUB_ENV"
-          echo "container_name=${${{env.repo}}#${{env.owner}}}"
+          echo "owner=${{github.repository_owner}}" >> "$GITHUB_ENV"
+          echo "container_name=${${{github.repository}}#${{github.repository_owner}}}"
+
       - name: Get container name
         id: get-name
         run: |
           echo "container_name: ${{ env.container_name }}"
           echo "repo: ${{ env.repo }}"
           echo "owner: ${{ env.owner }}"
+
       - name: Load secret
         id: op-load-secret
         uses: 1password/load-secrets-action@v1.2.0
@@ -37,6 +39,14 @@ jobs:
           USERNAME: op://end.works/end.works/username
           KEY: op://end.works/SSH Key/private key
           FINGERPRINT: op://end.works/SSH Key/fingerprint
+
+      - name: Generate job summary
+        run: |
+          echo "### Deploying to server! :rocket:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- host: ${{env.HOST}}" >> $GITHUB_STEP_SUMMARY
+          echo "- port: ${{env.POST}}" >> $GITHUB_STEP_SUMMARY
+          echo "- username: ${{env.USERNAME}}" >> $GITHUB_STEP_SUMMARY
 
       - name: Deploy image to server
         uses: appleboy/ssh-action@v0.1.10
