@@ -24,9 +24,6 @@ jobs:
           TAG="sha-$TAG"
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
 
-          echo $TAG
-          echo $CONTAINER_NAME
-
           [ "$VERSION" != "main" ] && CONTAINER_NAME="${CONTAINER_NAME}-$VERSION"
           [ "$VERSION" == "main" ] && TAG=latest
 
