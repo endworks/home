@@ -17,13 +17,19 @@ jobs:
       - name: Set container name
         id: set-name
         run: |
-          owner=${{github.repository_owner}}
-          image_name=${{github.repository}}
-          image_name="${image_name#$owner}"
-          image_name="${image_name#/}"
-          tag=${{github.sha}}
-          echo "TAG=${{github.sha}}" >> "$GITHUB_ENV"
-          echo "IMAGE_NAME=$image_name" >> "$GITHUB_ENV"
+          OWNER=${{github.repository_owner}}
+          REPO=${{github.repository}}
+
+          IMAGE_NAME="${REPO#$OWNER}"
+          IMAGE_NAME="${IMAGE_NAME#/}"
+
+          TAG="$(git rev-parse --short HEAD)"
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          [ "$VERSION" != "main" ] && IMAGE_NAME="${IMAGE_NAME}-$VERSION"
+          [ "$VERSION" == "main" ] && TAG=latest
+
+          echo "IMAGE_NAME=$IMAGE_NAME" >> "$GITHUB_ENV"
+          echo "TAG=$TAG" >> "$GITHUB_ENV"
 
       - name: Load secret
         id: op-load-secret
@@ -52,7 +58,7 @@ jobs:
           key: ${{ env.KEY }}
           # fingerprint: ${{ env.FINGERPRINT }}
           script: |
-            docker pull ghcr.io/${{ github.repository }}:next
+            docker pull ghcr.io/${{ github.repository }}:${{ env.TAG }}
             docker stop ${{ env.IMAGE_NAME }}
             docker rm ${{ env.IMAGE_NAME }}
-            docker run -p 8084:3000/tcp -ti -d --restart unless-stopped --name ${{ env.IMAGE_NAME }} ghcr.io/${{ github.repository }}:next
+            docker run -p 8084:3000/tcp -ti -d --restart unless-stopped --name ${{ env.IMAGE_NAME }} ghcr.io/${{ github.repository }}:${{ env.TAG }}
