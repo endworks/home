@@ -20,8 +20,8 @@ jobs:
         id: set-name
         run: |
           repository=${{github.repository}}
-          owner=${{github.repository_owner}}
-          image_name="${repository#/$owner}"
+          owner="/${{github.repository_owner}}"
+          image_name="${repository#$owner}"
           echo "IMAGE_NAME=$image_name" >> "$GITHUB_ENV"
 
       - name: Get container name
@@ -54,7 +54,7 @@ jobs:
           port: ${{ env.PORT }}
           username: ${{ env.USERNAME }}
           key: ${{ env.KEY }}
-          fingerprint: ${{ env.FINGERPRINT }}
+          # fingerprint: ${{ env.FINGERPRINT }}
           script: |
             docker pull ghcr.io/${{ github.repository }}:next
             docker stop ${{ env.IMAGE_NAME }}
