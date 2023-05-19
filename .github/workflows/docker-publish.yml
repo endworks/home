@@ -34,11 +34,14 @@ jobs:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          CR_PAT: op://end.works/GitHub Actions/password
+          CR_PAT: op://end.works/GitHub Personal Access Token/credential
 
-      - name: Log into GitHub Container Registry
-        # TODO: Create a PAT with `read:packages` and `write:packages` scopes and save it as an Actions secret `CR_PAT`
-        run: echo "${{ env.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ env.CR_PAT }}
 
       - name: Run tests
         run: |
@@ -68,11 +71,14 @@ jobs:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          CR_PAT: op://end.works/GitHub Actions/password
+          CR_PAT: op://end.works/GitHub Personal Access Token/credential
 
-      - name: Log into GitHub Container Registry
-        # TODO: Create a PAT with `read:packages` and `write:packages` scopes and save it as an Actions secret `CR_PAT`
-        run: echo "${{ env.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ env.CR_PAT }}
 
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
@@ -98,37 +104,3 @@ jobs:
 
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
-
-  # Deploy image to server
-  deploy:
-    # Ensure push job passes before updating image.
-    needs: push
-
-    runs-on: ubuntu-latest
-    steps:
-      - name: Load ssh secrets
-        id: op-load-ssh-secrets
-        uses: 1password/load-secrets-action@v1.2.0
-        with:
-          export-env: true
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          HOST: op://end.works/end.works/URL
-          PORT: op://end.works/end.works/port
-          USER: op://end.works/end.works/username
-          KEY: op://end.works/SSH Key/private key
-          FINGERPRINT: op://end.works/SSH Key/fingerprint
-
-      - name: Deploy image to server
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ env.HOST }}
-          username: ${{ env.USER }}
-          port: ${{ env.PORT }}
-          key: ${{ env.KEY }}
-          fingerprint: ${{ env.FINGERPRINT }}
-          script: |
-            docker pull ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:next
-            docker stop ${{ env.IMAGE_NAME }}
-            docker rm ${{ env.IMAGE_NAME }}
-            docker run -p 8084:3000/tcp -ti -d --restart unless-stopped --name ${{ env.IMAGE_NAME }} ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:next
