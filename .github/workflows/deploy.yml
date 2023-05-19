@@ -24,7 +24,12 @@ jobs:
           IMAGE_NAME="${IMAGE_NAME#/}"
 
           TAG=$(echo "${{github.sha}}" | cut -c1-8)
+          TAG="sha-$TAG"
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+          echo $TAG
+          echo $IMAGE_NAME
+
           [ "$VERSION" != "main" ] && IMAGE_NAME="${IMAGE_NAME}-$VERSION"
           [ "$VERSION" == "main" ] && TAG=latest
 
@@ -56,7 +61,6 @@ jobs:
           port: ${{ env.PORT }}
           username: ${{ env.USERNAME }}
           key: ${{ env.KEY }}
-          # fingerprint: ${{ env.FINGERPRINT }}
           script: |
             docker pull ghcr.io/${{ github.repository }}:${{ env.TAG }}
             docker stop ${{ env.IMAGE_NAME }}
