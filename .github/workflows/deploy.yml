@@ -17,20 +17,20 @@ jobs:
           OWNER=${{github.repository_owner}}
           REPO=${{github.repository}}
 
-          IMAGE_NAME="${REPO#$OWNER}"
-          IMAGE_NAME="${IMAGE_NAME#/}"
+          CONTAINER_NAME="${REPO#$OWNER}"
+          CONTAINER_NAME="${CONTAINER_NAME#/}"
 
           TAG=$(echo "${{github.sha}}" | cut -c1-8)
           TAG="sha-$TAG"
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
 
           echo $TAG
-          echo $IMAGE_NAME
+          echo $CONTAINER_NAME
 
-          [ "$VERSION" != "main" ] && IMAGE_NAME="${IMAGE_NAME}-$VERSION"
+          [ "$VERSION" != "main" ] && CONTAINER_NAME="${CONTAINER_NAME}-$VERSION"
           [ "$VERSION" == "main" ] && TAG=latest
 
-          echo "IMAGE_NAME=$IMAGE_NAME" >> "$GITHUB_ENV"
+          echo "CONTAINER_NAME=$IMAGE_NAME" >> "$GITHUB_ENV"
           echo "TAG=$TAG" >> "$GITHUB_ENV"
 
       - name: Load secret
@@ -46,11 +46,6 @@ jobs:
           KEY: op://end.works/SSH Key/private key
           FINGERPRINT: op://end.works/SSH Key/fingerprint
 
-      - name: Generate job summary
-        id: generate-summary
-        run: |
-          echo "### Deploying ``${{ github.repository }}@${{ env.TAG }}`` as ``${{ env.IMAGE_NAME }}``! :rocket:" > $GITHUB_STEP_SUMMARY
-
       - name: Deploy image to server
         uses: appleboy/ssh-action@v0.1.10
         with:
@@ -63,3 +58,9 @@ jobs:
             docker stop ${{ env.IMAGE_NAME }}
             docker rm ${{ env.IMAGE_NAME }}
             docker run -p 8084:3000/tcp -ti -d --restart unless-stopped --name ${{ env.IMAGE_NAME }} ghcr.io/${{ github.repository }}:${{ env.TAG }}
+
+      - name: Generate summary
+        id: generate-summary
+        run: |
+          echo "### Deployment done! :rocket:" > $GITHUB_STEP_SUMMARY
+          echo "Started container ``${{ env.CONTAINER_NAME }}`` running ``${{ github.repository }}@${{ env.TAG }}``" >> $GITHUB_STEP_SUMMARY
