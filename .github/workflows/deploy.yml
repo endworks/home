@@ -9,6 +9,9 @@ on:
     types:
       - completed
 
+env:
+  IMAGE_NAME: docker
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -16,20 +19,23 @@ jobs:
       - name: Set container name
         id: set-name
         run: |
-          echo "repo=${{github.repository}}" >> "$GITHUB_ENV"
-          echo "owner=${{github.repository_owner}}" >> "$GITHUB_ENV"
-          echo "container_name=${${{github.repository}}#${{github.repository_owner}}}" >> "$GITHUB_ENV"
+          repo=${{github.repository}}
+          owner=${{github.repository_owner}}
+          image_name="${repo#$owner}"
+          echo "container_name: $repo"
+          echo "repo: $owner"
+          echo "owner: $image_name"
+
+          echo "IMAGE_NAME=$image_name" >> "$GITHUB_ENV"
 
       - name: Get container name
         id: get-name
         run: |
-          echo "container_name: ${{ env.container_name }}"
-          echo "repo: ${{ env.repo }}"
-          echo "owner: ${{ env.owner }}"
+          echo "container_name: ${{ env.IMAGE_NAME }}"
 
       - name: Generate job summary
         run: |
-          echo "### Deploying `${{ github.repository }}` as `${{ env.container_name }}`! :rocket:" > $GITHUB_STEP_SUMMARY
+          echo "### Deploying `${{ github.repository }}` as `${{ env.IMAGE_NAME }}`! :rocket:" > $GITHUB_STEP_SUMMARY
 
       - name: Load secret
         id: op-load-secret
@@ -54,6 +60,6 @@ jobs:
           fingerprint: ${{ env.FINGERPRINT }}
           script: |
             docker pull ghcr.io/${{ github.repository }}:next
-            docker stop ${{ env.container_name }}
-            docker rm ${{ env.container_name }}
-            docker run -p 8084:3000/tcp -ti -d --restart unless-stopped --name ${{ env.container_name }} ghcr.io/${{ github.repository }}:next
+            docker stop ${{ env.IMAGE_NAME }}
+            docker rm ${{ env.IMAGE_NAME }}
+            docker run -p 8084:3000/tcp -ti -d --restart unless-stopped --name ${{ env.IMAGE_NAME }} ghcr.io/${{ github.repository }}:next
