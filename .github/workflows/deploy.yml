@@ -14,8 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - name: Set container name
-        id: set-name
+      - name: Set environment variables
+        id: set-env-vars
         run: |
           OWNER=${{github.repository_owner}}
           REPO=${{github.repository}}
@@ -23,7 +23,7 @@ jobs:
           IMAGE_NAME="${REPO#$OWNER}"
           IMAGE_NAME="${IMAGE_NAME#/}"
 
-          TAG="$(git rev-parse --short HEAD)"
+          TAG=$(echo "${{github.sha}}" | cut -c1-8)
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
           [ "$VERSION" != "main" ] && IMAGE_NAME="${IMAGE_NAME}-$VERSION"
           [ "$VERSION" == "main" ] && TAG=latest
