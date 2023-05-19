@@ -10,7 +10,7 @@ on:
       - completed
 
 env:
-  IMAGE_NAME: home
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   deploy:
