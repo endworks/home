@@ -20,8 +20,9 @@ jobs:
         id: set-name
         run: |
           repository=${{github.repository}}
-          owner="/${{github.repository_owner}}"
+          owner=${{github.repository_owner}}
           image_name="${repository#$owner}"
+          image_name="${image_name#/}"
           echo "IMAGE_NAME=$image_name" >> "$GITHUB_ENV"
 
       - name: Get container name
@@ -32,7 +33,7 @@ jobs:
       - name: Generate job summary
         id: generate-summary
         run: |
-          echo "### Deploying `"${{ github.repository }}"` as `"${{ env.IMAGE_NAME }}"`! :rocket:" > $GITHUB_STEP_SUMMARY
+          echo "### Deploying `${{ github.repository }}` as `${{ env.IMAGE_NAME }}`! :rocket:" > $GITHUB_STEP_SUMMARY
 
       - name: Load secret
         id: op-load-secret
