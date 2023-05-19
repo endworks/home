@@ -24,7 +24,7 @@ jobs:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           HOST: op://end.works/end.works/URL
           PORT: op://end.works/end.works/port
-          USER: op://end.works/end.works/username
+          USERNAME: op://end.works/end.works/username
           KEY: op://end.works/SSH Key/private key
           FINGERPRINT: op://end.works/SSH Key/fingerprint
 
@@ -33,7 +33,7 @@ jobs:
         with:
           host: ${{ env.HOST }}
           port: ${{ env.PORT }}
-          username: ${{ env.USER }}
+          username: ${{ env.USERNAME }}
           key: ${{ env.KEY }}
           fingerprint: ${{ env.FINGERPRINT }}
           script: |
