@@ -1,8 +1,5 @@
 name: Deploy
 
-env:
-    CONTAINER_NAME: ${github.repository#"$github.actor"}
-
 on:
   workflow_run:
     workflows: ["Docker"]
@@ -15,7 +12,12 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+        CONTAINER_NAME: ${github.repository#$github.actor }
     steps:
+      - name: Get container name
+        run: |
+          echo "container name: $CONTAINER_NAME"
       - name: Load secret
         id: op-load-secret
         uses: 1password/load-secrets-action@v1.2.0
@@ -36,7 +38,7 @@ jobs:
           port: ${{ env.PORT }}
           username: ${{ env.USERNAME }}
           key: ${{ env.KEY }}
-          # fingerprint: ${{ env.FINGERPRINT }}
+          fingerprint: ${{ env.FINGERPRINT }}
           script: |
             docker pull ghcr.io/${{ github.repository }}:next
             docker stop ${{ env.CONTAINER_NAME }}
