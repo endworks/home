@@ -1,12 +1,12 @@
-import path from 'path'
-import fs from 'fs'
 import express from 'express'
+import fs from 'fs'
+import path from 'path'
 import ReactDOMServer from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom/server'
 import App from './components/app'
 import routing from './routing'
 
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 3000
 const app = express()
 
 const routes = routing.map((item) => item.path)

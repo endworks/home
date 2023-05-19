@@ -6,9 +6,6 @@ on:
     types:
       - completed
 
-env:
-  IMAGE_NAME: docker
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -52,7 +49,7 @@ jobs:
       - name: Generate job summary
         id: generate-summary
         run: |
-          echo "### Deploying '${{ github.repository }}' as '${{ env.IMAGE_NAME }}'! :rocket:" > $GITHUB_STEP_SUMMARY
+          echo "### Deploying ``${{ github.repository }}@${{ env.TAG }}`` as ``${{ env.IMAGE_NAME }}``! :rocket:" > $GITHUB_STEP_SUMMARY
 
       - name: Deploy image to server
         uses: appleboy/ssh-action@v0.1.10
