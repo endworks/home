@@ -9,9 +9,6 @@ on:
     types:
       - completed
 
-env:
-  IMAGE_NAME: ${{ github.repository }}
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -38,7 +35,7 @@ jobs:
           key: ${{ env.KEY }}
           # fingerprint: ${{ env.FINGERPRINT }}
           script: |
-            docker pull ghcr.io/${{ env.IMAGE_NAME }}:next
-            docker stop ${{ env.IMAGE_NAME }}
-            docker rm ${{ env.IMAGE_NAME }}
-            docker run -p 8084:3000/tcp -ti -d --restart unless-stopped --name ${{ env.IMAGE_NAME }} ghcr.io/${{ env.IMAGE_NAME }}:next
+            docker pull ghcr.io/${{ github.repository }}:next
+            docker stop ${{ github.repository.name }}
+            docker rm ${{ github.repository.name }}
+            docker run -p 8084:3000/tcp -ti -d --restart unless-stopped --name ${{ github.repository.name }} ghcr.io/${{ github.repository }}:next
