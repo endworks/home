@@ -1,5 +1,8 @@
 name: Deploy
 
+env:
+    CONTAINER_NAME: ${github.repository#"$github.actor"}
+
 on:
   workflow_run:
     workflows: ["Docker"]
@@ -36,6 +39,6 @@ jobs:
           # fingerprint: ${{ env.FINGERPRINT }}
           script: |
             docker pull ghcr.io/${{ github.repository }}:next
-            docker stop ${{ github.repository.name }}
-            docker rm ${{ github.repository.name }}
-            docker run -p 8084:3000/tcp -ti -d --restart unless-stopped --name ${{ github.repository.name }} ghcr.io/${{ github.repository }}:next
+            docker stop ${{ env.CONTAINER_NAME }}
+            docker rm ${{ env.CONTAINER_NAME }}
+            docker run -p 8084:3000/tcp -ti -d --restart unless-stopped --name ${{ env.CONTAINER_NAME }} ghcr.io/${{ github.repository }}:next
