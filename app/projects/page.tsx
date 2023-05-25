@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styles from "../home.module.sass";
 
 export default function Projects() {
@@ -81,7 +82,7 @@ export default function Projects() {
                 </div>
               </div>
               {project.screenshot && (
-                <img
+                <Image
                   className={styles["project-screenshot"]}
                   src={project.screenshot}
                   alt={project.title}
