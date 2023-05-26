@@ -11,11 +11,10 @@ on:
   push:
     branches:
       - main
+      - "feature/**"
+      - "release/**"
     # Publish semver tags as releases.
     tags: ["v*.*.*"]
-  pull_request:
-    branches:
-      - main
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -123,11 +122,10 @@ jobs:
           CONTAINER_NAME="${REPO#$OWNER}"
           CONTAINER_NAME="${CONTAINER_NAME#/}"
 
-          TAG=$(echo "${{github.sha}}" | cut -c1-8)
+          TAG=$(echo "${{github.sha}}" | cut -c1-7)
           TAG="sha-$TAG"
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
 
-          [ "$VERSION" != "main" ] && CONTAINER_NAME="${CONTAINER_NAME}-$VERSION"
           [ "$VERSION" == "main" ] && TAG=latest
 
           echo "CONTAINER_NAME=$CONTAINER_NAME" >> "$GITHUB_ENV"
@@ -164,4 +162,3 @@ jobs:
         run: |
           echo "### Deployment done! :rocket:" > $GITHUB_STEP_SUMMARY
           echo "Started container ``${{ env.CONTAINER_NAME }}`` running ``${{ github.repository }}@${{ env.TAG }}``" >> $GITHUB_STEP_SUMMARY
-

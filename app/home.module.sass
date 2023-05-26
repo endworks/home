@@ -1,16 +1,4 @@
-@import '_variables'
-  
-body
-  margin: 0
-  font-family: $font-family
-  font-size: $font-size
-  -webkit-font-smoothing: antialiased
-  -moz-osx-font-smoothing: grayscale
-  background-color: black
-  color: white
-
-code
-  font-family: $font-family-code
+@import 'variables.module'
 
 .app
   display: flex
@@ -72,10 +60,6 @@ code
     color: black
     cursor: pointer
 
-p
-  margin: $padding-horizontal 0
-  font-size: $font-size
-
 .section
   width: 100%
 
@@ -112,3 +96,90 @@ p
 @media (max-width: 720px)
   .header-title
     padding-left: $padding-horizontal
+
+.menu
+  display: flex
+  list-style: none
+  margin: 8px 0 0 0
+  padding: 0
+  flex-grow: 1
+  justify-content: flex-end
+
+.menu a
+  margin: 0
+  font-weight: 600
+  padding: $padding-vertical $padding-horizontal
+  color: white
+  text-decoration: none
+  text-transform: lowercase
+  white-space: nowrap
+  font-size: $font-size-medium
+  line-height: $font-size-big
+
+  &.active
+    box-shadow: inset 0 -3px 0 0 white
+
+  &:hover
+    background: white
+    color: black
+
+@media (max-width: 720px)
+  .app-header
+    margin-top: 0
+    flex-direction: column
+    align-items: initial
+
+  .menu
+    margin: 0
+    border-top: solid 2px white
+
+.work-in-progress
+  font-weight: 600
+  font-size: $font-size-bigger
+  font-family: $font-family-code
+
+.project
+  display: flex
+  flex-direction: row
+  margin-bottom: 64px
+
+  &:nth-child(even)
+    flex-direction: row-reverse
+
+    .project-info
+      margin-right: 0
+      margin-left: $padding-horizontal
+
+  .project-info
+    flex-grow: 1
+    margin-right: $padding-horizontal
+
+  .project-title
+    margin: 0
+    padding: 0
+    border-bottom: solid 2px white
+    font-size: $font-size-medium
+
+  .project-screenshot
+    margin: 0
+    border: solid 2px white
+
+  .project-links
+    display: flex
+
+    .button
+      margin-right: $padding-horizontal
+
+@media (max-width: 720px)
+  .project
+    flex-direction: column !important
+
+    .project-info, &:nth-child(even) .project-info
+      margin: 0
+
+    .project-description, .project-links
+      padding: 0 $padding-horizontal
+
+    .project-screenshot
+      margin: $padding-horizontal $padding-horizontal 0
+      max-width: 320px
